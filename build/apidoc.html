@@ -46,12 +46,12 @@
     font-weight: bold;
 }
 </style>
-<h1>api-documentation for
+<h1>api documentation for
     <a
 
         href="http://github.com/brianc/node-postgres"
 
-    >pg (v6.1.4)</a>
+    >pg (v6.1.5)</a>
 </h1>
 <h4>PostgreSQL client - pure javascript & libpq with the same API</h4>
 <div class="apidocSectionDiv"><a
@@ -1391,7 +1391,7 @@ idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before 
 
 
 //this initializes a connection pool
-//it will keep idle connections open for a 30 seconds
+//it will keep idle connections open for 30 seconds
 //and set a limit of maximum 10 idle clients
 var pool = new pg.<span class="apidocCodeKeywordSpan">Pool</span>(config);
 
@@ -1908,6 +1908,7 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
     if(!callback) {
       return self.emit(&#x27;error&#x27;, error);
     }
+    con.end(); // make sure ECONNRESET errors don&#x27;t cause error events
     callback(error);
     callback = null;
   });
@@ -1921,8 +1922,7 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
       return;
     }
     if(self.activeQuery) {
-      var disconnectError = new Error(&#x27;Connection terminated&#x27;);
-      self.activeQuery.handleError( ...</pre></li>
+      var disconnectError = ...</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
 // instantiate a new client
@@ -3358,7 +3358,7 @@ idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before 
 
 
 //this initializes a connection pool
-//it will keep idle connections open for a 30 seconds
+//it will keep idle connections open for 30 seconds
 //and set a limit of maximum 10 idle clients
 var pool = new pg.<span class="apidocCodeKeywordSpan">Pool</span>(config);
 
