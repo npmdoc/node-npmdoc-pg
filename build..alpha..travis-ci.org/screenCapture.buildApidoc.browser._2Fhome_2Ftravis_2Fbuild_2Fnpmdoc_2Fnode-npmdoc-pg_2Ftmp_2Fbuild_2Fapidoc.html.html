@@ -1,4 +1,4 @@
-<div class="apidocDiv">
+<html><head></head><body><div class="apidocDiv">
 <style>
 /*csslint
 */
@@ -47,17 +47,10 @@
 }
 </style>
 <h1>api documentation for
-    <a
-
-        href="http://github.com/brianc/node-postgres"
-
-    >pg (v6.1.5)</a>
+    <a href="http://github.com/brianc/node-postgres">pg (v6.1.5)</a>
 </h1>
-<h4>PostgreSQL client - pure javascript & libpq with the same API</h4>
-<div class="apidocSectionDiv"><a
-    href="#apidoc.tableOfContents"
-    id="apidoc.tableOfContents"
-><h1>table of contents</h1></a><ol>
+<h4>PostgreSQL client - pure javascript &amp; libpq with the same API</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.pg">module pg</a><ol>
 
@@ -1306,7 +1299,7 @@
   });
   this.queryQueue = [];
   this.binary = c.binary || defaults.binary;
-  this.encoding = &#x27;utf8&#x27;;
+  this.encoding = 'utf8';
   this.processID = null;
   this.secretKey = null;
   this.ssl = this.connectionParameters.ssl || false;
@@ -1314,7 +1307,7 @@
     <li>example usage<pre class="apidocCodePre">...
 
 ```js
-var pg = require(&#x27;pg&#x27;);
+var pg = require('pg');
 
 // instantiate a new client
 // the client will read connection information from
@@ -1326,7 +1319,7 @@ client.connect(function (err) {
 if (err) throw err;
 
 // execute a query on our database
-client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function (err, result) {
+client.query('SELECT $1::text as name', ['brianc'], function (err, result) {
 ...</pre></li>
     </ul>
 
@@ -1348,7 +1341,7 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
   this.lastOffset = 0;
   this.buffer = null;
   this.offset = null;
-  this.encoding = &#x27;utf8&#x27;;
+  this.encoding = 'utf8';
   this.parsedStatements = {};
   this.writer = new Writer();
   this.ssl = config.ssl || false;
@@ -1360,8 +1353,8 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
     lengthPadding: -4
   });
   var self = this;
-  this.on(&#x27;newListener&#x27;, function(eventName) {
-    if(eventName == &#x27;message&#x27;) {
+  this.on('newListener', function(eventName) {
+    if(eventName == 'message') {
       self._emitMessage = true;
     }
   });
@@ -1399,7 +1392,7 @@ var pool = new pg.<span class="apidocCodeKeywordSpan">Pool</span>(config);
 // run a query on the client, and then return the client to the pool
 pool.connect(function(err, client, done) {
 if(err) {
-  return console.error(&#x27;error fetching client from pool&#x27;, err);
+  return console.error('error fetching client from pool', err);
 }
 ...</pre></li>
     </ul>
@@ -1420,7 +1413,7 @@ if(err) {
   EventEmitter.call(this)
   this.options = objectAssign({}, options)
   this.log = this.options.log || function () { }
-  this.Client = this.options.Client || Client || require(&#x27;pg&#x27;).Client
+  this.Client = this.options.Client || Client || require('pg').Client
   this.Promise = this.options.Promise || global.Promise
 
   this.options.max = this.options.max || this.options.poolSize || 10
@@ -1442,7 +1435,7 @@ if(err) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">Query = function (config, values, callback) {
-  // use of &#x22;new&#x22; optional
+  // use of "new" optional
   if(!(this instanceof Query)) { return new Query(config, values, callback); }
 
   config = utils.normalizeQueryConfig(config, values, callback);
@@ -1455,9 +1448,9 @@ if(err) {
   this.binary = config.binary;
   this.stream = config.stream;
   //use unique portal name each time
-  this.portal = config.portal || &#x22;&#x22;;
+  this.portal = config.portal || "";
   this.callback = config.callback;
-  if(process.domain &#x26;&#x26; config.callback) {
+  if(process.domain &amp;&amp; config.callback) {
     this.callback = process.domain.bind(config.callback);
   }
   this._result = new Result(config.rowMode, config.types);
@@ -1480,25 +1473,25 @@ if(err) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">connection_parameters = function (config) {
   //if a string is passed, it is a raw connection string so we parse it into a config
-  config = typeof config == &#x27;string&#x27; ? parse(config) : (config || {});
+  config = typeof config == 'string' ? parse(config) : (config || {});
   //if the config has a connectionString defined, parse IT into the config we use
   //this will override other default values with what is stored in connectionString
   if(config.connectionString) {
     config = parse(config.connectionString);
   }
-  this.user = val(&#x27;user&#x27;, config);
-  this.database = val(&#x27;database&#x27;, config);
-  this.port = parseInt(val(&#x27;port&#x27;, config), 10);
-  this.host = val(&#x27;host&#x27;, config);
-  this.password = val(&#x27;password&#x27;, config);
-  this.binary = val(&#x27;binary&#x27;, config);
-  this.ssl = typeof config.ssl === &#x27;undefined&#x27; ? useSsl() : config.ssl;
-  this.client_encoding = val(&#x22;client_encoding&#x22;, config);
-  //a domain socket begins with &#x27;/&#x27;
-  this.isDomainSocket = (!(this.host||&#x27;&#x27;).indexOf(&#x27;/&#x27;));
+  this.user = val('user', config);
+  this.database = val('database', config);
+  this.port = parseInt(val('port', config), 10);
+  this.host = val('host', config);
+  this.password = val('password', config);
+  this.binary = val('binary', config);
+  this.ssl = typeof config.ssl === 'undefined' ? useSsl() : config.ssl;
+  this.client_encoding = val("client_encoding", config);
+  //a domain socket begins with '/'
+  this.isDomainSocket = (!(this.host||'').indexOf('/'));
 
-  this.application_name = val(&#x27;application_name&#x27;, config, &#x27;PGAPPNAME&#x27;);
-  this.fallback_application_name = val(&#x27;fallback_application_name&#x27;, config, false);
+  this.application_name = val('application_name', config, 'PGAPPNAME');
+  this.fallback_application_name = val('fallback_application_name', config, false);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -1520,7 +1513,7 @@ if(err) {
   this.fields = [];
   this._parsers = [];
   this.RowCtor = null;
-  this.rowAsArray = rowMode == &#x22;array&#x22;;
+  this.rowAsArray = rowMode == "array";
   if(this.rowAsArray) {
     this.parseRow = this._parseRowAsArray;
   }
@@ -1612,7 +1605,7 @@ if(err) {
   });
   this.queryQueue = [];
   this.binary = c.binary || defaults.binary;
-  this.encoding = &#x27;utf8&#x27;;
+  this.encoding = 'utf8';
   this.processID = null;
   this.secretKey = null;
   this.ssl = this.connectionParameters.ssl || false;
@@ -1620,7 +1613,7 @@ if(err) {
     <li>example usage<pre class="apidocCodePre">...
 
 ```js
-var pg = require(&#x27;pg&#x27;);
+var pg = require('pg');
 
 // instantiate a new client
 // the client will read connection information from
@@ -1632,7 +1625,7 @@ client.connect(function (err) {
 if (err) throw err;
 
 // execute a query on our database
-client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function (err, result) {
+client.query('SELECT $1::text as name', ['brianc'], function (err, result) {
 ...</pre></li>
     </ul>
 
@@ -1646,7 +1639,7 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">Query = function (config, values, callback) {
-  // use of &#x22;new&#x22; optional
+  // use of "new" optional
   if(!(this instanceof Query)) { return new Query(config, values, callback); }
 
   config = utils.normalizeQueryConfig(config, values, callback);
@@ -1659,9 +1652,9 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
   this.binary = config.binary;
   this.stream = config.stream;
   //use unique portal name each time
-  this.portal = config.portal || &#x22;&#x22;;
+  this.portal = config.portal || "";
   this.callback = config.callback;
-  if(process.domain &#x26;&#x26; config.callback) {
+  if(process.domain &amp;&amp; config.callback) {
     this.callback = process.domain.bind(config.callback);
   }
   this._result = new Result(config.rowMode, config.types);
@@ -1683,7 +1676,7 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">md5 = function (string) {
-  return crypto.createHash(&#x27;md5&#x27;).update(string, &#x27;utf-8&#x27;).digest(&#x27;hex&#x27;);
+  return crypto.createHash('md5').update(string, 'utf-8').digest('hex');
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -1726,7 +1719,7 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
       this.activeQuery.submit(this.connection);
     } else if(this.hasExecuted) {
       this.activeQuery = null;
-      this.emit(&#x27;drain&#x27;);
+      this.emit('drain');
     }
   }
 }</pre></li>
@@ -1746,14 +1739,14 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
   if(client.activeQuery == query) {
     var con = this.connection;
 
-    if(this.host &#x26;&#x26; this.host.indexOf(&#x27;/&#x27;) === 0) {
-      con.connect(this.host + &#x27;/.s.PGSQL.&#x27; + this.port);
+    if(this.host &amp;&amp; this.host.indexOf('/') === 0) {
+      con.connect(this.host + '/.s.PGSQL.' + this.port);
     } else {
       con.connect(this.port, this.host);
     }
 
     //once connection is established send cancel message
-    con.on(&#x27;connect&#x27;, function() {
+    con.on('connect', function() {
       con.cancel(client.processID, client.secretKey);
     });
   } else if(client.queryQueue.indexOf(query) != -1) {
@@ -1776,15 +1769,15 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
   var self = this;
   var con = this.connection;
 
-  if(this.host &#x26;&#x26; this.host.indexOf(&#x27;/&#x27;) === 0) {
-    con.connect(this.host + &#x27;/.s.PGSQL.&#x27; + this.port);
+  if(this.host &amp;&amp; this.host.indexOf('/') === 0) {
+    con.connect(this.host + '/.s.PGSQL.' + this.port);
   } else {
     con.connect(this.port, this.host);
   }
 
 
   //once connection is established send startup message
-  con.on(&#x27;connect&#x27;, function() {
+  con.on('connect', function() {
     if(self.ssl) {
       con.requestSsl();
     } else {
@@ -1792,7 +1785,7 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
     }
   });
 
-  con.on(&#x27;sslconnect&#x27;, function() {
+  con.on('sslconnect', function() {
     con.startup(self.getStartupConf());
   });
 
@@ -1812,71 +1805,71 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
   }
 
   //password request handling
-  con.on(&#x27;authenticationCleartextPassword&#x27;, checkPgPass(function() {
+  con.on('authenticationCleartextPassword', checkPgPass(function() {
     con.password(self.password);
   }));
 
   //password request handling
-  con.on(&#x27;authenticationMD5Password&#x27;, checkPgPass(function(msg) {
+  con.on('authenticationMD5Password', checkPgPass(function(msg) {
     var inner = Client.md5(self.password + self.user);
     var outer = Client.md5(Buffer.concat([new Buffer(inner), msg.salt]));
-    var md5password = &#x22;md5&#x22; + outer;
+    var md5password = "md5" + outer;
     con.password(md5password);
   }));
 
-  con.once(&#x27;backendKeyData&#x27;, function(msg) {
+  con.once('backendKeyData', function(msg) {
     self.processID = msg.processID;
     self.secretKey = msg.secretKey;
   });
 
   //hook up query handling events to connection
   //after the connection initially becomes ready for queries
-  con.once(&#x27;readyForQuery&#x27;, function() {
+  con.once('readyForQuery', function() {
 
     //delegate rowDescription to active query
-    con.on(&#x27;rowDescription&#x27;, function(msg) {
+    con.on('rowDescription', function(msg) {
       self.activeQuery.handleRowDescription(msg);
     });
 
     //delegate dataRow to active query
-    con.on(&#x27;dataRow&#x27;, function(msg) {
+    con.on('dataRow', function(msg) {
       self.activeQuery.handleDataRow(msg);
     });
 
     //delegate portalSuspended to active query
-    con.on(&#x27;portalSuspended&#x27;, function(msg) {
+    con.on('portalSuspended', function(msg) {
       self.activeQuery.handlePortalSuspended(con);
     });
 
     //deletagate emptyQuery to active query
-    con.on(&#x27;emptyQuery&#x27;, function(msg) {
+    con.on('emptyQuery', function(msg) {
       self.activeQuery.handleEmptyQuery(con);
     });
 
     //delegate commandComplete to active query
-    con.on(&#x27;commandComplete&#x27;, function(msg) {
+    con.on('commandComplete', function(msg) {
       self.activeQuery.handleCommandComplete(msg, con);
     });
 
     //if a prepared statement has a name and properly parses
-    //we track that its already been executed so we don&#x27;t parse
+    //we track that its already been executed so we don't parse
     //it again on the same client
-    con.on(&#x27;parseComplete&#x27;, function(msg) {
+    con.on('parseComplete', function(msg) {
       if(self.activeQuery.name) {
         con.parsedStatements[self.activeQuery.name] = true;
       }
     });
 
-    con.on(&#x27;copyInResponse&#x27;, function(msg) {
+    con.on('copyInResponse', function(msg) {
       self.activeQuery.handleCopyInResponse(self.connection);
     });
 
-    con.on(&#x27;copyData&#x27;, function (msg) {
+    con.on('copyData', function (msg) {
       self.activeQuery.handleCopyData(msg, self.connection);
     });
 
-    con.on(&#x27;notification&#x27;, function(msg) {
-      self.emit(&#x27;notification&#x27;, msg);
+    con.on('notification', function(msg) {
+      self.emit('notification', msg);
     });
 
     //process possible callback argument to Client#connect
@@ -1886,10 +1879,10 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
       //after the connect event
       callback = null;
     }
-    self.emit(&#x27;connect&#x27;);
+    self.emit('connect');
   });
 
-  con.on(&#x27;readyForQuery&#x27;, function() {
+  con.on('readyForQuery', function() {
     var activeQuery = self.activeQuery;
     self.activeQuery = null;
     self.readyForQuery = true;
@@ -1899,24 +1892,24 @@ client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function
     }
   });
 
-  con.on(&#x27;error&#x27;, function(error) {
+  con.on('error', function(error) {
     if(self.activeQuery) {
       var activeQuery = self.activeQuery;
       self.activeQuery = null;
       return activeQuery.handleError(error, con);
     }
     if(!callback) {
-      return self.emit(&#x27;error&#x27;, error);
+      return self.emit('error', error);
     }
-    con.end(); // make sure ECONNRESET errors don&#x27;t cause error events
+    con.end(); // make sure ECONNRESET errors don't cause error events
     callback(error);
     callback = null;
   });
 
-  con.once(&#x27;end&#x27;, function() {
+  con.once('end', function() {
     if ( callback ) {
-      // haven&#x27;t received a connection message yet !
-      var err = new Error(&#x27;Connection terminated&#x27;);
+      // haven't received a connection message yet !
+      var err = new Error('Connection terminated');
       callback(err);
       callback = null;
       return;
@@ -1935,7 +1928,7 @@ client.<span class="apidocCodeKeywordSpan">connect</span>(function (err) {
   if (err) throw err;
 
   // execute a query on our database
-  client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function (err, result) {
+  client.query('SELECT $1::text as name', ['brianc'], function (err, result) {
 if (err) throw err;
 
 // just print the result to the console
@@ -1952,7 +1945,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">copyFrom = function (text) {
-  throw new Error(&#x22;For PostgreSQL COPY TO/COPY FROM support npm install pg-copy-streams&#x22;);
+  throw new Error("For PostgreSQL COPY TO/COPY FROM support npm install pg-copy-streams");
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -1967,7 +1960,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">copyTo = function (text) {
-  throw new Error(&#x22;For PostgreSQL COPY TO/COPY FROM support npm install pg-copy-streams&#x22;);
+  throw new Error("For PostgreSQL COPY TO/COPY FROM support npm install pg-copy-streams");
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -1984,15 +1977,15 @@ if (err) throw err;
     <li>description and source-code<pre class="apidocCodePre">end = function (cb) {
   this.connection.end();
   if (cb) {
-    this.connection.once(&#x27;end&#x27;, cb);
+    this.connection.once('end', cb);
   }
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-  client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function (err, result) {
+  client.query('SELECT $1::text as name', ['brianc'], function (err, result) {
     if (err) throw err;
 
     // just print the result to the console
-    console.log(result.rows[0]); // outputs: { name: &#x27;brianc&#x27; }
+    console.log(result.rows[0]); // outputs: { name: 'brianc' }
 
     // disconnect the client
     client.<span class="apidocCodeKeywordSpan">end</span>(function (err) {
@@ -2016,18 +2009,18 @@ if (err) throw err;
     <ul>
     <li>description and source-code<pre class="apidocCodePre">escapeIdentifier = function (str) {
 
-  var escaped = &#x27;&#x22;&#x27;;
+  var escaped = '"';
 
-  for(var i = 0; i &#x3c; str.length; i++) {
+  for(var i = 0; i &lt; str.length; i++) {
     var c = str[i];
-    if(c === &#x27;&#x22;&#x27;) {
+    if(c === '"') {
       escaped += c + c;
     } else {
       escaped += c;
     }
   }
 
-  escaped += &#x27;&#x22;&#x27;;
+  escaped += '"';
 
   return escaped;
 }</pre></li>
@@ -2046,13 +2039,13 @@ if (err) throw err;
     <li>description and source-code<pre class="apidocCodePre">escapeLiteral = function (str) {
 
   var hasBackslash = false;
-  var escaped = &#x27;\&#x27;&#x27;;
+  var escaped = '\'';
 
-  for(var i = 0; i &#x3c; str.length; i++) {
+  for(var i = 0; i &lt; str.length; i++) {
     var c = str[i];
-    if(c === &#x27;\&#x27;&#x27;) {
+    if(c === '\'') {
       escaped += c + c;
-    } else if (c === &#x27;\\&#x27;) {
+    } else if (c === '\\') {
       escaped += c + c;
       hasBackslash = true;
     } else {
@@ -2060,10 +2053,10 @@ if (err) throw err;
     }
   }
 
-  escaped += &#x27;\&#x27;&#x27;;
+  escaped += '\'';
 
   if(hasBackslash === true) {
-    escaped = &#x27; E&#x27; + escaped;
+    escaped = ' E' + escaped;
   }
 
   return escaped;
@@ -2116,15 +2109,15 @@ if (err) throw err;
   parseInputDatesAsUTC: false
 };
 
-var pgTypes = require(&#x27;pg-types&#x27;);
+var pgTypes = require('pg-types');
 // save default parsers
-var parseBigInteger = pgTypes.<span class="apidocCodeKeywordSpan">getTypeParser</span>(20, &#x27;text&#x27;);
-var parseBigIntegerArray = pgTypes.getTypeParser(1016, &#x27;text&#x27;);
+var parseBigInteger = pgTypes.<span class="apidocCodeKeywordSpan">getTypeParser</span>(20, 'text');
+var parseBigIntegerArray = pgTypes.getTypeParser(1016, 'text');
 
 //parse int8 so you can get your count values as actual numbers
-module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
-  pgTypes.setTypeParser(20, &#x27;text&#x27;, val ? pgTypes.getTypeParser(23, &#x27;text&#x27;) : parseBigInteger);
-  pgTypes.setTypeParser(1016, &#x27;text&#x27;, val ? pgTypes.getTypeParser(1007, &#x27;text&#x27;) : parseBigIntegerArray);
+module.exports.__defineSetter__("parseInt8", function(val) {
+  pgTypes.setTypeParser(20, 'text', val ? pgTypes.getTypeParser(23, 'text') : parseBigInteger);
+  pgTypes.setTypeParser(1016, 'text', val ? pgTypes.getTypeParser(1007, 'text') : parseBigIntegerArray);
 });
 ...</pre></li>
     </ul>
@@ -2140,9 +2133,9 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">query = function (config, values, callback) {
   //can take in strings, config object or query object
-  var query = (typeof config.submit == &#x27;function&#x27;) ? config :
+  var query = (typeof config.submit == 'function') ? config :
      new Query(config, values, callback);
-  if(this.binary &#x26;&#x26; !query.binary) {
+  if(this.binary &amp;&amp; !query.binary) {
     query.binary = true;
   }
   if(query._result) {
@@ -2161,12 +2154,12 @@ client.connect(function (err) {
   if (err) throw err;
 
   // execute a query on our database
-  client.<span class="apidocCodeKeywordSpan">query</span>(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function (err
+  client.<span class="apidocCodeKeywordSpan">query</span>('SELECT $1::text as name', ['brianc'], function (err
 , result) {
 if (err) throw err;
 
 // just print the result to the console
-console.log(result.rows[0]); // outputs: { name: &#x27;brianc&#x27; }
+console.log(result.rows[0]); // outputs: { name: 'brianc' }
 
 // disconnect the client
 client.end(function (err) {
@@ -2186,16 +2179,16 @@ client.end(function (err) {
   return this._types.setTypeParser(oid, format, parseFn);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-var pgTypes = require(&#x27;pg-types&#x27;);
+var pgTypes = require('pg-types');
 // save default parsers
-var parseBigInteger = pgTypes.getTypeParser(20, &#x27;text&#x27;);
-var parseBigIntegerArray = pgTypes.getTypeParser(1016, &#x27;text&#x27;);
+var parseBigInteger = pgTypes.getTypeParser(20, 'text');
+var parseBigIntegerArray = pgTypes.getTypeParser(1016, 'text');
 
 //parse int8 so you can get your count values as actual numbers
-module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
-  pgTypes.<span class="apidocCodeKeywordSpan">setTypeParser</span>(20, &#x27;text&#x27;, val ? pgTypes.getTypeParser(23, &#x27;text
-&#x27;) : parseBigInteger);
-  pgTypes.setTypeParser(1016, &#x27;text&#x27;, val ? pgTypes.getTypeParser(1007, &#x27;text&#x27;) : parseBigIntegerArray);
+module.exports.__defineSetter__("parseInt8", function(val) {
+  pgTypes.<span class="apidocCodeKeywordSpan">setTypeParser</span>(20, 'text', val ? pgTypes.getTypeParser(23, 'text
+') : parseBigInteger);
+  pgTypes.setTypeParser(1016, 'text', val ? pgTypes.getTypeParser(1007, 'text') : parseBigIntegerArray);
 });
 ...</pre></li>
     </ul>
@@ -2223,7 +2216,7 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
   this.lastOffset = 0;
   this.buffer = null;
   this.offset = null;
-  this.encoding = &#x27;utf8&#x27;;
+  this.encoding = 'utf8';
   this.parsedStatements = {};
   this.writer = new Writer();
   this.ssl = config.ssl || false;
@@ -2235,8 +2228,8 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
     lengthPadding: -4
   });
   var self = this;
-  this.on(&#x27;newListener&#x27;, function(eventName) {
-    if(eventName == &#x27;message&#x27;) {
+  this.on('newListener', function(eventName) {
+    if(eventName == 'message') {
       self._emitMessage = true;
     }
   });
@@ -2315,20 +2308,20 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">attachListeners = function (stream) {
   var self = this;
-  stream.on(&#x27;data&#x27;, function(buff) {
+  stream.on('data', function(buff) {
     self._reader.addChunk(buff);
     var packet = self._reader.read();
     while(packet) {
       var msg = self.parseMessage(packet);
       if(self._emitMessage) {
-        self.emit(&#x27;message&#x27;, msg);
+        self.emit('message', msg);
       }
       self.emit(msg.name, msg);
       packet = self._reader.read();
     }
   });
-  stream.on(&#x27;end&#x27;, function() {
-    self.emit(&#x27;end&#x27;);
+  stream.on('end', function() {
+    self.emit('end');
   });
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -2346,13 +2339,13 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
     <li>description and source-code<pre class="apidocCodePre">bind = function (config, more) {
   //normalize config
   config = config || {};
-  config.portal = config.portal || &#x27;&#x27;;
-  config.statement = config.statement || &#x27;&#x27;;
+  config.portal = config.portal || '';
+  config.statement = config.statement || '';
   config.binary = config.binary || false;
   var values = config.values || [];
   var len = values.length;
   var useBinary = false;
-  for (var j = 0; j &#x3c; len; j++)
+  for (var j = 0; j &lt; len; j++)
     useBinary |= values[j] instanceof Buffer;
   var buffer = this.writer
     .addCString(config.portal)
@@ -2361,13 +2354,13 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
     buffer.addInt16(0);
   else {
     buffer.addInt16(len);
-    for (j = 0; j &#x3c; len; j++)
+    for (j = 0; j &lt; len; j++)
       buffer.addInt16(values[j] instanceof Buffer);
   }
   buffer.addInt16(len);
-  for(var i = 0; i &#x3c; len; i++) {
+  for(var i = 0; i &lt; len; i++) {
     var val = values[i];
-    if(val === null || typeof val === &#x22;undefined&#x22;) {
+    if(val === null || typeof val === "undefined") {
       buffer.addInt32(-1);
     } else if (val instanceof Buffer) {
       buffer.addInt32(val.length);
@@ -2385,7 +2378,7 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
   else {
     buffer.addInt16(0); // format codes to use text
   }
-  //0x42 = &#x27;B&#x27;
+  //0x42 = 'B'
   this._send(0x42, more);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -2429,7 +2422,7 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">close = function (msg, more) {
-  this.writer.addCString(msg.type + (msg.name || &#x27;&#x27;));
+  this.writer.addCString(msg.type + (msg.name || ''));
   this._send(0x43, more);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -2446,47 +2439,47 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">connect = function (port, host) {
 
-  if(this.stream.readyState === &#x27;closed&#x27;) {
+  if(this.stream.readyState === 'closed') {
     this.stream.connect(port, host);
-  } else if(this.stream.readyState == &#x27;open&#x27;) {
-    this.emit(&#x27;connect&#x27;);
+  } else if(this.stream.readyState == 'open') {
+    this.emit('connect');
   }
 
   var self = this;
 
-  this.stream.on(&#x27;connect&#x27;, function() {
+  this.stream.on('connect', function() {
     if (self._keepAlive) {
       self.stream.setKeepAlive(true);
     }
-    self.emit(&#x27;connect&#x27;);
+    self.emit('connect');
   });
 
-  this.stream.on(&#x27;error&#x27;, function(error) {
-    //don&#x27;t raise ECONNRESET errors - they can &#x26; should be ignored
+  this.stream.on('error', function(error) {
+    //don't raise ECONNRESET errors - they can &amp; should be ignored
     //during disconnect
-    if(self._ending &#x26;&#x26; error.code == &#x27;ECONNRESET&#x27;) {
+    if(self._ending &amp;&amp; error.code == 'ECONNRESET') {
       return;
     }
-    self.emit(&#x27;error&#x27;, error);
+    self.emit('error', error);
   });
 
-  this.stream.on(&#x27;close&#x27;, function() {
-    // NOTE: node-0.10 emits both &#x27;end&#x27; and &#x27;close&#x27;
+  this.stream.on('close', function() {
+    // NOTE: node-0.10 emits both 'end' and 'close'
     //       for streams closed by the peer, while
-    //       node-0.8 only emits &#x27;close&#x27;
-    self.emit(&#x27;end&#x27;);
+    //       node-0.8 only emits 'close'
+    self.emit('end');
   });
 
   if(!this.ssl) {
     return this.attachListeners(this.stream);
   }
 
-  this.stream.once(&#x27;data&#x27;, function(buffer) {
-    var responseCode = buffer.toString(&#x27;utf8&#x27;);
-    if(responseCode != &#x27;S&#x27;) {
-      return self.emit(&#x27;error&#x27;, new Error(&#x27;The server does not support SSL connections&#x27;));
+  this.stream.once('data', function(buffer) {
+    var responseCode = buffer.toString('utf8');
+    if(responseCode != 'S') {
+      return self.emit('error', new Error('The server does not support SSL connections'));
     }
-    var tls = require(&#x27;tls&#x27;);
+    var tls = require('tls');
     self.stream = tls.connect({
       socket: self.stream,
       servername: host,
@@ -2499,10 +2492,10 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
       NPNProtocols: self.ssl.NPNProtocols
     });
     self.attachListeners(self.stream);
-    self.emit(&#x27;sslconnect&#x27;);
+    self.emit('sslconnect');
 
-    self.stream.on(&#x27;error&#x27;, function(error){
-      self.emit(&#x27;error&#x27;, error);
+    self.stream.on('error', function(error){
+      self.emit('error', error);
     });
   });
 }</pre></li>
@@ -2518,7 +2511,7 @@ client.<span class="apidocCodeKeywordSpan">connect</span>(function (err) {
   if (err) throw err;
 
   // execute a query on our database
-  client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function (err, result) {
+  client.query('SELECT $1::text as name', ['brianc'], function (err, result) {
 if (err) throw err;
 
 // just print the result to the console
@@ -2535,7 +2528,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">describe = function (msg, more) {
-  this.writer.addCString(msg.type + (msg.name || &#x27;&#x27;));
+  this.writer.addCString(msg.type + (msg.name || ''));
   this._send(0x44, more);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -2551,17 +2544,17 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">end = function () {
-  //0x58 = &#x27;X&#x27;
+  //0x58 = 'X'
   this.writer.add(emptyBuffer);
   this._ending = true;
   this._send(0x58);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-  client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function (err, result) {
+  client.query('SELECT $1::text as name', ['brianc'], function (err, result) {
     if (err) throw err;
 
     // just print the result to the console
-    console.log(result.rows[0]); // outputs: { name: &#x27;brianc&#x27; }
+    console.log(result.rows[0]); // outputs: { name: 'brianc' }
 
     // disconnect the client
     client.<span class="apidocCodeKeywordSpan">end</span>(function (err) {
@@ -2600,13 +2593,13 @@ if (err) throw err;
     <ul>
     <li>description and source-code<pre class="apidocCodePre">execute = function (config, more) {
   config = config || {};
-  config.portal = config.portal || &#x27;&#x27;;
-  config.rows = config.rows || &#x27;&#x27;;
+  config.portal = config.portal || '';
+  config.rows = config.rows || '';
   this.writer
     .addCString(config.portal)
     .addInt32(config.rows);
 
-  //0x45 = &#x27;E&#x27;
+  //0x45 = 'E'
   this._send(0x45, more);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -2622,7 +2615,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">flush = function () {
-  //0x48 = &#x27;H&#x27;
+  //0x48 = 'H'
   this.writer.add(emptyBuffer);
   this._send(0x48);
 }</pre></li>
@@ -2640,16 +2633,16 @@ if (err) throw err;
     <ul>
     <li>description and source-code<pre class="apidocCodePre">parse = function (query, more) {
   //expect something like this:
-  // { name: &#x27;queryName&#x27;,
-  //   text: &#x27;select * from blah&#x27;,
-  //   types: [&#x27;int8&#x27;, &#x27;bool&#x27;] }
+  // { name: 'queryName',
+  //   text: 'select * from blah',
+  //   types: ['int8', 'bool'] }
 
   //normalize missing query names to allow for null
-  query.name = query.name || &#x27;&#x27;;
-  if (query.name.length &#x3e; 63) {
-    console.error(&#x27;Warning! Postgres only supports 63 characters for query names.&#x27;);
-    console.error(&#x27;You supplied&#x27;, query.name, &#x27;(&#x27;, query.name.length, &#x27;)&#x27;);
-    console.error(&#x27;This can cause conflicts and silent errors executing queries&#x27;);
+  query.name = query.name || '';
+  if (query.name.length &gt; 63) {
+    console.error('Warning! Postgres only supports 63 characters for query names.');
+    console.error('You supplied', query.name, '(', query.name.length, ')');
+    console.error('This can cause conflicts and silent errors executing queries');
   }
   //normalize null type array
   query.types = query.types || [];
@@ -2658,7 +2651,7 @@ if (err) throw err;
     .addCString(query.name) //name of query
     .addCString(query.text) //actual query text
     .addInt16(len);
-  for(var i = 0; i &#x3c; len; i++) {
+  for(var i = 0; i &lt; len; i++) {
     buffer.addInt32(query.types[i]);
   }
 
@@ -2678,7 +2671,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">parseA = function (buffer, length) {
-  var msg = new Message(&#x27;notification&#x27;, length);
+  var msg = new Message('notification', length);
   msg.processId = this.parseInt32(buffer);
   msg.channel = this.parseCString(buffer);
   msg.payload = this.parseCString(buffer);
@@ -2697,7 +2690,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">parseC = function (buffer, length) {
-  var msg = new Message(&#x27;commandComplete&#x27;, length);
+  var msg = new Message('commandComplete', length);
   msg.text = this.parseCString(buffer);
   return msg;
 }</pre></li>
@@ -2734,7 +2727,7 @@ if (err) throw err;
     <li>description and source-code<pre class="apidocCodePre">parseD = function (buffer, length) {
   var fieldCount = this.parseInt16(buffer);
   var msg = new DataRowMessage(length, fieldCount);
-  for(var i = 0; i &#x3c; fieldCount; i++) {
+  for(var i = 0; i &lt; fieldCount; i++) {
     msg.fields.push(this._readValue(buffer));
   }
   return msg;
@@ -2754,13 +2747,13 @@ if (err) throw err;
     <li>description and source-code<pre class="apidocCodePre">parseE = function (buffer, length) {
   var fields = {};
   var msg, item;
-  var input = new Message(&#x27;error&#x27;, length);
+  var input = new Message('error', length);
   var fieldType = this.readString(buffer, 1);
-  while(fieldType != &#x27;\0&#x27;) {
+  while(fieldType != '\0') {
     fields[fieldType] = this.parseCString(buffer);
     fieldType = this.readString(buffer, 1);
   }
-  if(input.name === &#x27;error&#x27;) {
+  if(input.name === 'error') {
     // the msg is an Error instance
     msg = new Error(fields.M);
     for (item in input) {
@@ -2834,7 +2827,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">parseG = function (buffer, length) {
-  var msg = new Message(&#x27;copyInResponse&#x27;, length);
+  var msg = new Message('copyInResponse', length);
   return this.parseGH(buffer, msg);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -2855,7 +2848,7 @@ if (err) throw err;
   msg.binary = isBinary;
   var columnCount = this.parseInt16(buffer);
   msg.columnTypes = [];
-  for(var i = 0; i&#x3c;columnCount; i++) {
+  for(var i = 0; i&lt;columnCount; i++) {
     msg.columnTypes.push(this.parseInt16(buffer));
   }
   return msg;
@@ -2873,7 +2866,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">parseH = function (buffer, length) {
-  var msg = new Message(&#x27;copyOutResponse&#x27;, length);
+  var msg = new Message('copyOutResponse', length);
   return this.parseGH(buffer, msg);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -2923,7 +2916,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">parseK = function (buffer, length) {
-  var msg = new Message(&#x27;backendKeyData&#x27;, length);
+  var msg = new Message('backendKeyData', length);
   msg.processID = this.parseInt32(buffer);
   msg.secretKey = this.parseInt32(buffer);
   return msg;
@@ -2975,25 +2968,25 @@ if (err) throw err;
     return this.parseN(buffer, length);
 
   case 0x31: //1
-    return new Message(&#x27;parseComplete&#x27;, length);
+    return new Message('parseComplete', length);
 
   case 0x32: //2
-    return new Message(&#x27;bindComplete&#x27;, length);
+    return new Message('bindComplete', length);
 
   case 0x33: //3
-    return new Message(&#x27;closeComplete&#x27;, length);
+    return new Message('closeComplete', length);
 
   case 0x41: //A
     return this.parseA(buffer, length);
 
   case 0x6e: //n
-    return new Message(&#x27;noData&#x27;, length);
+    return new Message('noData', length);
 
   case 0x49: //I
-    return new Message(&#x27;emptyQuery&#x27;, length);
+    return new Message('emptyQuery', length);
 
   case 0x73: //s
-    return new Message(&#x27;portalSuspended&#x27;, length);
+    return new Message('portalSuspended', length);
 
   case 0x47: //G
     return this.parseG(buffer, length);
@@ -3002,7 +2995,7 @@ if (err) throw err;
     return this.parseH(buffer, length);
 
   case 0x63: //c
-    return new Message(&#x27;copyDone&#x27;, length);
+    return new Message('copyDone', length);
 
   case 0x64: //d
     return this.parsed(buffer, length);
@@ -3022,7 +3015,7 @@ if (err) throw err;
     <ul>
     <li>description and source-code<pre class="apidocCodePre">parseN = function (buffer, length) {
   var msg = this.parseE(buffer, length);
-  msg.name = &#x27;notice&#x27;;
+  msg.name = 'notice';
   return msg;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -3039,25 +3032,25 @@ if (err) throw err;
     <ul>
     <li>description and source-code<pre class="apidocCodePre">parseR = function (buffer, length) {
   var code = 0;
-  var msg = new Message(&#x27;authenticationOk&#x27;, length);
+  var msg = new Message('authenticationOk', length);
   if(msg.length === 8) {
     code = this.parseInt32(buffer);
     if(code === 3) {
-      msg.name = &#x27;authenticationCleartextPassword&#x27;;
+      msg.name = 'authenticationCleartextPassword';
     }
     return msg;
   }
   if(msg.length === 12) {
     code = this.parseInt32(buffer);
     if(code === 5) { //md5 required
-      msg.name = &#x27;authenticationMD5Password&#x27;;
+      msg.name = 'authenticationMD5Password';
       msg.salt = new Buffer(4);
       buffer.copy(msg.salt, 0, this.offset, this.offset + 4);
       this.offset += 4;
       return msg;
     }
   }
-  throw new Error(&#x22;Unknown authenticationOk message type&#x22; + util.inspect(msg));
+  throw new Error("Unknown authenticationOk message type" + util.inspect(msg));
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -3072,7 +3065,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">parseS = function (buffer, length) {
-  var msg = new Message(&#x27;parameterStatus&#x27;, length);
+  var msg = new Message('parameterStatus', length);
   msg.parameterName = this.parseCString(buffer);
   msg.parameterValue = this.parseCString(buffer);
   return msg;
@@ -3093,7 +3086,7 @@ if (err) throw err;
   var msg = new Message(ROW_DESCRIPTION, length);
   msg.fieldCount = this.parseInt16(buffer);
   var fields = [];
-  for(var i = 0; i &#x3c; msg.fieldCount; i++){
+  for(var i = 0; i &lt; msg.fieldCount; i++){
     fields.push(this.parseField(buffer));
   }
   msg.fields = fields;
@@ -3112,8 +3105,8 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">parseZ = function (buffer, length) {
-  var msg = new Message(&#x27;readyForQuery&#x27;, length);
-  msg.name = &#x27;readyForQuery&#x27;;
+  var msg = new Message('readyForQuery', length);
+  msg.name = 'readyForQuery';
   msg.status = this.readString(buffer, 1);
   return msg;
 }</pre></li>
@@ -3130,7 +3123,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">parsed = function (buffer, length) {
-  var msg = new Message(&#x27;copyData&#x27;, length);
+  var msg = new Message('copyData', length);
   msg.chunk = this.readBytes(buffer, msg.length - 4);
   return msg;
 }</pre></li>
@@ -3147,7 +3140,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">password = function (password) {
-  //0x70 = &#x27;p&#x27;
+  //0x70 = 'p'
   this._send(0x70, this.writer.addCString(password));
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -3174,12 +3167,12 @@ client.connect(function (err) {
   if (err) throw err;
 
   // execute a query on our database
-  client.<span class="apidocCodeKeywordSpan">query</span>(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function (err
+  client.<span class="apidocCodeKeywordSpan">query</span>('SELECT $1::text as name', ['brianc'], function (err
 , result) {
 if (err) throw err;
 
 // just print the result to the console
-console.log(result.rows[0]); // outputs: { name: &#x27;brianc&#x27; }
+console.log(result.rows[0]); // outputs: { name: 'brianc' }
 
 // disconnect the client
 client.end(function (err) {
@@ -3295,9 +3288,9 @@ client.end(function (err) {
     writer.addCString(key).addCString(val);
   });
 
-  writer.addCString(&#x27;client_encoding&#x27;).addCString(&#x22;&#x27;utf-8&#x27;&#x22;);
+  writer.addCString('client_encoding').addCString("'utf-8'");
 
-  var bodyBuffer = writer.addCString(&#x27;&#x27;).flush();
+  var bodyBuffer = writer.addCString('').flush();
   //this message is sent without a code
 
   var length = bodyBuffer.length + 4;
@@ -3366,7 +3359,7 @@ var pool = new pg.<span class="apidocCodeKeywordSpan">Pool</span>(config);
 // run a query on the client, and then return the client to the pool
 pool.connect(function(err, client, done) {
 if(err) {
-  return console.error(&#x27;error fetching client from pool&#x27;, err);
+  return console.error('error fetching client from pool', err);
 }
 ...</pre></li>
     </ul>
@@ -3387,7 +3380,7 @@ if(err) {
   EventEmitter.call(this)
   this.options = objectAssign({}, options)
   this.log = this.options.log || function () { }
-  this.Client = this.options.Client || Client || require(&#x27;pg&#x27;).Client
+  this.Client = this.options.Client || Client || require('pg').Client
   this.Promise = this.options.Promise || global.Promise
 
   this.options.max = this.options.max || this.options.poolSize || 10
@@ -3434,23 +3427,23 @@ if(err) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">_create = function (cb) {
-  this.log(&#x27;connecting new client&#x27;)
+  this.log('connecting new client')
   var client = new this.Client(this.options)
 
-  client.on(&#x27;error&#x27;, function (e) {
-    this.log(&#x27;connected client error:&#x27;, e)
+  client.on('error', function (e) {
+    this.log('connected client error:', e)
     this.pool.destroy(client)
     e.client = client
-    this.emit(&#x27;error&#x27;, e)
+    this.emit('error', e)
   }.bind(this))
 
   client.connect(function (err) {
     if (err) {
-      this.log(&#x27;client connection error:&#x27;, err)
+      this.log('client connection error:', err)
       cb(err)
     } else {
-      this.log(&#x27;client connected&#x27;)
-      this.emit(&#x27;connect&#x27;, client)
+      this.log('client connected')
+      this.emit('connect', client)
       cb(null, client)
     }
   }.bind(this))
@@ -3534,10 +3527,10 @@ if(err) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">connect = function (cb) {
   return this._promiseNoCallback(cb, function (resolve, reject) {
-    this.log(&#x27;acquire client begin&#x27;)
+    this.log('acquire client begin')
     this.pool.acquire(function (err, client) {
       if (err) {
-        this.log(&#x27;acquire client. error:&#x27;, err)
+        this.log('acquire client. error:', err)
         if (cb) {
           cb(err, null, function () {})
         } else {
@@ -3546,16 +3539,16 @@ if(err) {
         return
       }
 
-      this.log(&#x27;acquire client&#x27;)
-      this.emit(&#x27;acquire&#x27;, client)
+      this.log('acquire client')
+      this.emit('acquire', client)
 
       client.release = function (err) {
         delete client.release
         if (err) {
-          this.log(&#x27;destroy client. error:&#x27;, err)
+          this.log('destroy client. error:', err)
           this.pool.destroy(client)
         } else {
-          this.log(&#x27;release client&#x27;)
+          this.log('release client')
           this.pool.release(client)
         }
       }.bind(this)
@@ -3580,7 +3573,7 @@ client.<span class="apidocCodeKeywordSpan">connect</span>(function (err) {
   if (err) throw err;
 
   // execute a query on our database
-  client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function (err, result) {
+  client.query('SELECT $1::text as name', ['brianc'], function (err, result) {
 if (err) throw err;
 
 // just print the result to the console
@@ -3597,20 +3590,20 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">end = function (cb) {
-  this.log(&#x27;draining pool&#x27;)
+  this.log('draining pool')
   return this._promise(cb, function (resolve, reject) {
     this.pool.drain(function () {
-      this.log(&#x27;pool drained, calling destroy all now&#x27;)
+      this.log('pool drained, calling destroy all now')
       this.pool.destroyAllNow(resolve)
     }.bind(this))
   }.bind(this))
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-  client.query(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function (err, result) {
+  client.query('SELECT $1::text as name', ['brianc'], function (err, result) {
     if (err) throw err;
 
     // just print the result to the console
-    console.log(result.rows[0]); // outputs: { name: &#x27;brianc&#x27; }
+    console.log(result.rows[0]); // outputs: { name: 'brianc' }
 
     // disconnect the client
     client.<span class="apidocCodeKeywordSpan">end</span>(function (err) {
@@ -3633,7 +3626,7 @@ if (err) throw err;
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">query = function (text, values, cb) {
-  if (typeof values === &#x27;function&#x27;) {
+  if (typeof values === 'function') {
     cb = values
     values = undefined
   }
@@ -3658,12 +3651,12 @@ client.connect(function (err) {
   if (err) throw err;
 
   // execute a query on our database
-  client.<span class="apidocCodeKeywordSpan">query</span>(&#x27;SELECT $1::text as name&#x27;, [&#x27;brianc&#x27;], function (err
+  client.<span class="apidocCodeKeywordSpan">query</span>('SELECT $1::text as name', ['brianc'], function (err
 , result) {
 if (err) throw err;
 
 // just print the result to the console
-console.log(result.rows[0]); // outputs: { name: &#x27;brianc&#x27; }
+console.log(result.rows[0]); // outputs: { name: 'brianc' }
 
 // disconnect the client
 client.end(function (err) {
@@ -3681,10 +3674,10 @@ client.end(function (err) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">take = function (cb) {
   return this._promiseNoCallback(cb, function (resolve, reject) {
-    this.log(&#x27;acquire client begin&#x27;)
+    this.log('acquire client begin')
     this.pool.acquire(function (err, client) {
       if (err) {
-        this.log(&#x27;acquire client. error:&#x27;, err)
+        this.log('acquire client. error:', err)
         if (cb) {
           cb(err, null, function () {})
         } else {
@@ -3693,16 +3686,16 @@ client.end(function (err) {
         return
       }
 
-      this.log(&#x27;acquire client&#x27;)
-      this.emit(&#x27;acquire&#x27;, client)
+      this.log('acquire client')
+      this.emit('acquire', client)
 
       client.release = function (err) {
         delete client.release
         if (err) {
-          this.log(&#x27;destroy client. error:&#x27;, err)
+          this.log('destroy client. error:', err)
           this.pool.destroy(client)
         } else {
-          this.log(&#x27;release client&#x27;)
+          this.log('release client')
           this.pool.release(client)
         }
       }.bind(this)
@@ -3733,7 +3726,7 @@ client.end(function (err) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">Query = function (config, values, callback) {
-  // use of &#x22;new&#x22; optional
+  // use of "new" optional
   if(!(this instanceof Query)) { return new Query(config, values, callback); }
 
   config = utils.normalizeQueryConfig(config, values, callback);
@@ -3746,9 +3739,9 @@ client.end(function (err) {
   this.binary = config.binary;
   this.stream = config.stream;
   //use unique portal name each time
-  this.portal = config.portal || &#x22;&#x22;;
+  this.portal = config.portal || "";
   this.callback = config.callback;
-  if(process.domain &#x26;&#x26; config.callback) {
+  if(process.domain &amp;&amp; config.callback) {
     this.callback = process.domain.bind(config.callback);
   }
   this._result = new Result(config.rowMode, config.types);
@@ -3865,7 +3858,7 @@ client.end(function (err) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">handleCopyInResponse = function (connection) {
   if(this.stream) this.stream.startStreamingToConnection(connection);
-  else connection.sendCopyFail(&#x27;No source stream defined&#x27;);
+  else connection.sendCopyFail('No source stream defined');
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -3893,7 +3886,7 @@ client.end(function (err) {
     return;
   }
 
-  this.emit(&#x27;row&#x27;, row, this._result);
+  this.emit('row', row, this._result);
   if (this._accumulateRows) {
     this._result.addRow(row);
   }
@@ -3941,7 +3934,7 @@ client.end(function (err) {
   if(this.callback) {
     return this.callback(err);
   }
-  this.emit(&#x27;error&#x27;, err);
+  this.emit('error', err);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -3977,7 +3970,7 @@ client.end(function (err) {
   if(this.callback) {
     this.callback(null, this._result);
   }
-  this.emit(&#x27;end&#x27;, this._result);
+  this.emit('end', this._result);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -3993,7 +3986,7 @@ client.end(function (err) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">handleRowDescription = function (msg) {
   this._result.addFields(msg.fields);
-  this._accumulateRows = this.callback || !this.listeners(&#x27;row&#x27;).length;
+  this._accumulateRows = this.callback || !this.listeners('row').length;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -4008,7 +4001,7 @@ client.end(function (err) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">hasBeenParsed = function (connection) {
-  return this.name &#x26;&#x26; connection.parsedStatements[this.name];
+  return this.name &amp;&amp; connection.parsedStatements[this.name];
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -4049,8 +4042,8 @@ client.end(function (err) {
   }, true);
 
   connection.describe({
-    type: &#x27;P&#x27;,
-    name: self.portalName || &#x22;&#x22;
+    type: 'P',
+    name: self.portalName || ""
   }, true);
 
   this._getRows(connection, this.rows);
@@ -4070,8 +4063,8 @@ client.end(function (err) {
     <li>description and source-code<pre class="apidocCodePre">promise = function () {
   if (this._promise) return this._promise;
   this._promise = new Promise(function(resolve, reject) {
-    this.once(&#x27;end&#x27;, resolve);
-    this.once(&#x27;error&#x27;, reject);
+    this.once('end', resolve);
+    this.once('error', reject);
   }.bind(this));
   return this._promise;
 }</pre></li>
@@ -4093,11 +4086,11 @@ client.end(function (err) {
   //always prepare if there are max number of rows expected per
   //portal execution
   if(this.rows) { return true; }
-  //don&#x27;t prepare empty text queries
+  //don't prepare empty text queries
   if(!this.text) { return false; }
   //prepare if there are values
   if(!this.values) { return false; }
-  return this.values.length &#x3e; 0;
+  return this.values.length &gt; 0;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -4152,25 +4145,25 @@ client.end(function (err) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">connection_parameters = function (config) {
   //if a string is passed, it is a raw connection string so we parse it into a config
-  config = typeof config == &#x27;string&#x27; ? parse(config) : (config || {});
+  config = typeof config == 'string' ? parse(config) : (config || {});
   //if the config has a connectionString defined, parse IT into the config we use
   //this will override other default values with what is stored in connectionString
   if(config.connectionString) {
     config = parse(config.connectionString);
   }
-  this.user = val(&#x27;user&#x27;, config);
-  this.database = val(&#x27;database&#x27;, config);
-  this.port = parseInt(val(&#x27;port&#x27;, config), 10);
-  this.host = val(&#x27;host&#x27;, config);
-  this.password = val(&#x27;password&#x27;, config);
-  this.binary = val(&#x27;binary&#x27;, config);
-  this.ssl = typeof config.ssl === &#x27;undefined&#x27; ? useSsl() : config.ssl;
-  this.client_encoding = val(&#x22;client_encoding&#x22;, config);
-  //a domain socket begins with &#x27;/&#x27;
-  this.isDomainSocket = (!(this.host||&#x27;&#x27;).indexOf(&#x27;/&#x27;));
+  this.user = val('user', config);
+  this.database = val('database', config);
+  this.port = parseInt(val('port', config), 10);
+  this.host = val('host', config);
+  this.password = val('password', config);
+  this.binary = val('binary', config);
+  this.ssl = typeof config.ssl === 'undefined' ? useSsl() : config.ssl;
+  this.client_encoding = val("client_encoding", config);
+  //a domain socket begins with '/'
+  this.isDomainSocket = (!(this.host||'').indexOf('/'));
 
-  this.application_name = val(&#x27;application_name&#x27;, config, &#x27;PGAPPNAME&#x27;);
-  this.fallback_application_name = val(&#x27;fallback_application_name&#x27;, config, false);
+  this.application_name = val('application_name', config, 'PGAPPNAME');
+  this.fallback_application_name = val('fallback_application_name', config, false);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -4191,28 +4184,28 @@ client.end(function (err) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">getLibpqConnectionString = function (cb) {
   var params = [];
-  add(params, this, &#x27;user&#x27;);
-  add(params, this, &#x27;password&#x27;);
-  add(params, this, &#x27;port&#x27;);
-  add(params, this, &#x27;application_name&#x27;);
-  add(params, this, &#x27;fallback_application_name&#x27;);
+  add(params, this, 'user');
+  add(params, this, 'password');
+  add(params, this, 'port');
+  add(params, this, 'application_name');
+  add(params, this, 'fallback_application_name');
 
   if(this.database) {
-    params.push(&#x22;dbname=&#x27;&#x22; + this.database + &#x22;&#x27;&#x22;);
+    params.push("dbname='" + this.database + "'");
   }
   if(this.host) {
-    params.push(&#x22;host=&#x22; + this.host);
+    params.push("host=" + this.host);
   }
   if(this.isDomainSocket) {
-    return cb(null, params.join(&#x27; &#x27;));
+    return cb(null, params.join(' '));
   }
   if(this.client_encoding) {
-    params.push(&#x22;client_encoding=&#x27;&#x22; + this.client_encoding + &#x22;&#x27;&#x22;);
+    params.push("client_encoding='" + this.client_encoding + "'");
   }
   dns.lookup(this.host, function(err, address) {
     if(err) return cb(err, null);
-    params.push(&#x22;hostaddr=&#x22; + address);
-    return cb(null, params.join(&#x27; &#x27;));
+    params.push("hostaddr=" + address);
+    return cb(null, params.join(' '));
   });
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -4240,7 +4233,7 @@ client.end(function (err) {
   this.fields = [];
   this._parsers = [];
   this.RowCtor = null;
-  this.rowAsArray = rowMode == &#x22;array&#x22;;
+  this.rowAsArray = rowMode == "array";
   if(this.rowAsArray) {
     this.parseRow = this._parseRowAsArray;
   }
@@ -4263,7 +4256,7 @@ client.end(function (err) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function getTypeParser(oid, format) {
-  format = format || &#x27;text&#x27;;
+  format = format || 'text';
   if (!typeParsers[format]) {
     return noParse;
   }
@@ -4273,18 +4266,18 @@ client.end(function (err) {
   this.fields = [];
   this._parsers = [];
 }
-var ctorBody = &#x22;&#x22;;
-for(var i = 0; i &#x3c; fieldDescriptions.length; i++) {
+var ctorBody = "";
+for(var i = 0; i &lt; fieldDescriptions.length; i++) {
   var desc = fieldDescriptions[i];
   this.fields.push(desc);
-  var parser = this.<span class="apidocCodeKeywordSpan">_getTypeParser</span>(desc.dataTypeID, desc.format || &#x27;text&#x27;);
+  var parser = this.<span class="apidocCodeKeywordSpan">_getTypeParser</span>(desc.dataTypeID, desc.format || 'text');
   this._parsers.push(parser);
   //this is some craziness to compile the row result parsing
   //results in ~60% speedup on large query result sets
   ctorBody += inlineParser(desc.name, i);
 }
 if(!this.rowAsArray) {
-  this.RowCtor = Function(&#x22;parsers&#x22;, &#x22;rowData&#x22;, ctorBody);
+  this.RowCtor = Function("parsers", "rowData", ctorBody);
 ...</pre></li>
     </ul>
 
@@ -4299,7 +4292,7 @@ if(!this.rowAsArray) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">_parseRowAsArray = function (rowData) {
   var row = [];
-  for(var i = 0, len = rowData.length; i &#x3c; len; i++) {
+  for(var i = 0, len = rowData.length; i &lt; len; i++) {
     var rawValue = rowData[i];
     if(rawValue !== null) {
       row.push(this._parsers[i](rawValue));
@@ -4357,24 +4350,24 @@ if(!this.rowAsArray) {
     <li>description and source-code<pre class="apidocCodePre">addFields = function (fieldDescriptions) {
   //clears field definitions
   //multiple query statements in 1 action can result in multiple sets
-  //of rowDescriptions...eg: &#x27;select NOW(); select 1::int;&#x27;
+  //of rowDescriptions...eg: 'select NOW(); select 1::int;'
   //you need to reset the fields
   if(this.fields.length) {
     this.fields = [];
     this._parsers = [];
   }
-  var ctorBody = &#x22;&#x22;;
-  for(var i = 0; i &#x3c; fieldDescriptions.length; i++) {
+  var ctorBody = "";
+  for(var i = 0; i &lt; fieldDescriptions.length; i++) {
     var desc = fieldDescriptions[i];
     this.fields.push(desc);
-    var parser = this._getTypeParser(desc.dataTypeID, desc.format || &#x27;text&#x27;);
+    var parser = this._getTypeParser(desc.dataTypeID, desc.format || 'text');
     this._parsers.push(parser);
     //this is some craziness to compile the row result parsing
     //results in ~60% speedup on large query result sets
     ctorBody += inlineParser(desc.name, i);
   }
   if(!this.rowAsArray) {
-    this.RowCtor = Function(&#x22;parsers&#x22;, &#x22;rowData&#x22;, ctorBody);
+    this.RowCtor = Function("parsers", "rowData", ctorBody);
   }
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -4448,8 +4441,8 @@ if(!this.rowAsArray) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">getOverrides = function (format) {
   switch(format) {
-    case &#x27;text&#x27;: return this.text;
-    case &#x27;binary&#x27;: return this.binary;
+    case 'text': return this.text;
+    case 'binary': return this.binary;
     default: return {};
   }
 }</pre></li>
@@ -4457,15 +4450,15 @@ if(!this.rowAsArray) {
 };
 
 TypeOverrides.prototype.setTypeParser = function(oid, format, parseFn) {
-  if(typeof format == &#x27;function&#x27;) {
+  if(typeof format == 'function') {
     parseFn = format;
-    format = &#x27;text&#x27;;
+    format = 'text';
   }
   this.<span class="apidocCodeKeywordSpan">getOverrides</span>(format)[oid] = parseFn;
 };
 
 TypeOverrides.prototype.getTypeParser = function(oid, format) {
-  format = format || &#x27;text&#x27;;
+  format = format || 'text';
   return this.getOverrides(format)[oid] || this._types.getTypeParser(oid, format);
 };
 ...</pre></li>
@@ -4481,7 +4474,7 @@ TypeOverrides.prototype.getTypeParser = function(oid, format) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">getTypeParser = function (oid, format) {
-  format = format || &#x27;text&#x27;;
+  format = format || 'text';
   return this.getOverrides(format)[oid] || this._types.getTypeParser(oid, format);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
@@ -4490,15 +4483,15 @@ TypeOverrides.prototype.getTypeParser = function(oid, format) {
   parseInputDatesAsUTC: false
 };
 
-var pgTypes = require(&#x27;pg-types&#x27;);
+var pgTypes = require('pg-types');
 // save default parsers
-var parseBigInteger = pgTypes.<span class="apidocCodeKeywordSpan">getTypeParser</span>(20, &#x27;text&#x27;);
-var parseBigIntegerArray = pgTypes.getTypeParser(1016, &#x27;text&#x27;);
+var parseBigInteger = pgTypes.<span class="apidocCodeKeywordSpan">getTypeParser</span>(20, 'text');
+var parseBigIntegerArray = pgTypes.getTypeParser(1016, 'text');
 
 //parse int8 so you can get your count values as actual numbers
-module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
-  pgTypes.setTypeParser(20, &#x27;text&#x27;, val ? pgTypes.getTypeParser(23, &#x27;text&#x27;) : parseBigInteger);
-  pgTypes.setTypeParser(1016, &#x27;text&#x27;, val ? pgTypes.getTypeParser(1007, &#x27;text&#x27;) : parseBigIntegerArray);
+module.exports.__defineSetter__("parseInt8", function(val) {
+  pgTypes.setTypeParser(20, 'text', val ? pgTypes.getTypeParser(23, 'text') : parseBigInteger);
+  pgTypes.setTypeParser(1016, 'text', val ? pgTypes.getTypeParser(1007, 'text') : parseBigIntegerArray);
 });
 ...</pre></li>
     </ul>
@@ -4513,23 +4506,23 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">setTypeParser = function (oid, format, parseFn) {
-  if(typeof format == &#x27;function&#x27;) {
+  if(typeof format == 'function') {
     parseFn = format;
-    format = &#x27;text&#x27;;
+    format = 'text';
   }
   this.getOverrides(format)[oid] = parseFn;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-var pgTypes = require(&#x27;pg-types&#x27;);
+var pgTypes = require('pg-types');
 // save default parsers
-var parseBigInteger = pgTypes.getTypeParser(20, &#x27;text&#x27;);
-var parseBigIntegerArray = pgTypes.getTypeParser(1016, &#x27;text&#x27;);
+var parseBigInteger = pgTypes.getTypeParser(20, 'text');
+var parseBigIntegerArray = pgTypes.getTypeParser(1016, 'text');
 
 //parse int8 so you can get your count values as actual numbers
-module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
-  pgTypes.<span class="apidocCodeKeywordSpan">setTypeParser</span>(20, &#x27;text&#x27;, val ? pgTypes.getTypeParser(23, &#x27;text
-&#x27;) : parseBigInteger);
-  pgTypes.setTypeParser(1016, &#x27;text&#x27;, val ? pgTypes.getTypeParser(1007, &#x27;text&#x27;) : parseBigIntegerArray);
+module.exports.__defineSetter__("parseInt8", function(val) {
+  pgTypes.<span class="apidocCodeKeywordSpan">setTypeParser</span>(20, 'text', val ? pgTypes.getTypeParser(23, 'text
+') : parseBigInteger);
+  pgTypes.setTypeParser(1016, 'text', val ? pgTypes.getTypeParser(1007, 'text') : parseBigIntegerArray);
 });
 ...</pre></li>
     </ul>
@@ -4549,7 +4542,7 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function getTypeParser(oid, format) {
-  format = format || &#x27;text&#x27;;
+  format = format || 'text';
   if (!typeParsers[format]) {
     return noParse;
   }
@@ -4561,15 +4554,15 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
   parseInputDatesAsUTC: false
 };
 
-var pgTypes = require(&#x27;pg-types&#x27;);
+var pgTypes = require('pg-types');
 // save default parsers
-var parseBigInteger = pgTypes.<span class="apidocCodeKeywordSpan">getTypeParser</span>(20, &#x27;text&#x27;);
-var parseBigIntegerArray = pgTypes.getTypeParser(1016, &#x27;text&#x27;);
+var parseBigInteger = pgTypes.<span class="apidocCodeKeywordSpan">getTypeParser</span>(20, 'text');
+var parseBigIntegerArray = pgTypes.getTypeParser(1016, 'text');
 
 //parse int8 so you can get your count values as actual numbers
-module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
-  pgTypes.setTypeParser(20, &#x27;text&#x27;, val ? pgTypes.getTypeParser(23, &#x27;text&#x27;) : parseBigInteger);
-  pgTypes.setTypeParser(1016, &#x27;text&#x27;, val ? pgTypes.getTypeParser(1007, &#x27;text&#x27;) : parseBigIntegerArray);
+module.exports.__defineSetter__("parseInt8", function(val) {
+  pgTypes.setTypeParser(20, 'text', val ? pgTypes.getTypeParser(23, 'text') : parseBigInteger);
+  pgTypes.setTypeParser(1016, 'text', val ? pgTypes.getTypeParser(1007, 'text') : parseBigIntegerArray);
 });
 ...</pre></li>
     </ul>
@@ -4584,23 +4577,23 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function setTypeParser(oid, format, parseFn) {
-  if(typeof format == &#x27;function&#x27;) {
+  if(typeof format == 'function') {
     parseFn = format;
-    format = &#x27;text&#x27;;
+    format = 'text';
   }
   typeParsers[format][oid] = parseFn;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-var pgTypes = require(&#x27;pg-types&#x27;);
+var pgTypes = require('pg-types');
 // save default parsers
-var parseBigInteger = pgTypes.getTypeParser(20, &#x27;text&#x27;);
-var parseBigIntegerArray = pgTypes.getTypeParser(1016, &#x27;text&#x27;);
+var parseBigInteger = pgTypes.getTypeParser(20, 'text');
+var parseBigIntegerArray = pgTypes.getTypeParser(1016, 'text');
 
 //parse int8 so you can get your count values as actual numbers
-module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
-  pgTypes.<span class="apidocCodeKeywordSpan">setTypeParser</span>(20, &#x27;text&#x27;, val ? pgTypes.getTypeParser(23, &#x27;text
-&#x27;) : parseBigInteger);
-  pgTypes.setTypeParser(1016, &#x27;text&#x27;, val ? pgTypes.getTypeParser(1007, &#x27;text&#x27;) : parseBigIntegerArray);
+module.exports.__defineSetter__("parseInt8", function(val) {
+  pgTypes.<span class="apidocCodeKeywordSpan">setTypeParser</span>(20, 'text', val ? pgTypes.getTypeParser(23, 'text
+') : parseBigInteger);
+  pgTypes.setTypeParser(1016, 'text', val ? pgTypes.getTypeParser(1007, 'text') : parseBigIntegerArray);
 });
 ...</pre></li>
     </ul>
@@ -4647,9 +4640,9 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function normalizeQueryConfig(config, values, callback) {
   //can take in strings or config objects
-  config = (typeof(config) == &#x27;string&#x27;) ? { text: config } : config;
+  config = (typeof(config) == 'string') ? { text: config } : config;
   if(values) {
-    if(typeof values === &#x27;function&#x27;) {
+    if(typeof values === 'function') {
       config.callback = values;
     } else {
       config.values = values;
@@ -4689,3 +4682,4 @@ module.exports.__defineSetter__(&#x22;parseInt8&#x22;, function(val) {
     ]
 </div>
 </div>
+</body></html>
