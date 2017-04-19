@@ -110,6 +110,15 @@
 
         <li>
 
+            <a class="apidocElementLiA" href="#apidoc.element.pg.query">
+            function <span class="apidocSignatureSpan">pg.</span>query
+            <span class="apidocSignatureSpan">(native)</span>
+            </a>
+
+        </li>
+
+        <li>
+
             <a class="apidocElementLiA" href="#apidoc.element.pg.result">
             function <span class="apidocSignatureSpan">pg.</span>result
             <span class="apidocSignatureSpan">(rowMode)</span>
@@ -189,6 +198,12 @@
         <li>
 
             <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">pg.</span>native</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">pg.</span>query.prototype</span>
 
         </li>
 
@@ -1087,6 +1102,77 @@
 
     </ol></li>
 
+    <li class="apidocModuleLi"><a href="#apidoc.module.pg.query">module pg.query</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.pg.query.query">
+            function <span class="apidocSignatureSpan">pg.</span>query
+            <span class="apidocSignatureSpan">(native)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.pg.query.super_">
+            function <span class="apidocSignatureSpan">pg.query.</span>super_
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.pg.query.prototype">module pg.query.prototype</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.pg.query.prototype.catch">
+            function <span class="apidocSignatureSpan">pg.query.prototype.</span>catch
+            <span class="apidocSignatureSpan">(callback)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.pg.query.prototype.handleError">
+            function <span class="apidocSignatureSpan">pg.query.prototype.</span>handleError
+            <span class="apidocSignatureSpan">(err)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.pg.query.prototype.promise">
+            function <span class="apidocSignatureSpan">pg.query.prototype.</span>promise
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.pg.query.prototype.submit">
+            function <span class="apidocSignatureSpan">pg.query.prototype.</span>submit
+            <span class="apidocSignatureSpan">(client)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.pg.query.prototype.then">
+            function <span class="apidocSignatureSpan">pg.query.prototype.</span>then
+            <span class="apidocSignatureSpan">(onSuccess, onFailure)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
     <li class="apidocModuleLi"><a href="#apidoc.module.pg.result">module pg.result</a><ol>
 
         <li>
@@ -1420,6 +1506,14 @@ if(err) {
   this.options.create = this.options.create || this._create.bind(this)
   this.options.destroy = this.options.destroy || this._destroy.bind(this)
   this.pool = new genericPool.Pool(this.options)
+  // Monkey patch to ensure we always finish our work
+  //  - There is a bug where callbacks go uncalled if min is not set
+  //  - We might still not want a connection to *always* exist
+  //  - but we do want to create up to max connections if we have work
+  //  - still waiting
+  // This should be safe till the version of pg-pool is upgraded
+  // SEE: https://github.com/coopernurse/node-pool/pull/186
+  this.pool._ensureMinimum = _ensureMinimum
   this.onCreate = this.options.onCreate
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -1499,6 +1593,55 @@ if(err) {
 
 
     <h2>
+        <a href="#apidoc.element.pg.query" id="apidoc.element.pg.query">
+        function <span class="apidocSignatureSpan">pg.</span>query
+        <span class="apidocSignatureSpan">(native)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">query = function (native) {
+  EventEmitter.call(this);
+  this.native = native;
+  this.text = null;
+  this.values = null;
+  this.name = null;
+  this.callback = null;
+  this.state = 'new';
+  this._arrayMode = false;
+
+  //if the 'row' event is listened for
+  //then emit them as they come in
+  //without setting singleRowMode to true
+  //this has almost no meaning because libpq
+  //reads all rows into memory befor returning any
+  this._emitRowEvents = false;
+  this.on('newListener', function(event) {
+    if(event === 'row') this._emitRowEvents = true;
+  }.bind(this));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var client = new pg.Client();
+
+// connect to our database
+client.connect(function (err) {
+  if (err) throw err;
+
+  // execute a query on our database
+  client.<span class="apidocCodeKeywordSpan">query</span>('SELECT $1::text as name', ['brianc'], function (err
+, result) {
+if (err) throw err;
+
+// just print the result to the console
+console.log(result.rows[0]); // outputs: { name: 'brianc' }
+
+// disconnect the client
+client.end(function (err) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
         <a href="#apidoc.element.pg.result" id="apidoc.element.pg.result">
         function <span class="apidocSignatureSpan">pg.</span>result
         <span class="apidocSignatureSpan">(rowMode)</span>
@@ -1537,6 +1680,8 @@ if(err) {
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
+
+
 
 
 
@@ -2381,7 +2526,23 @@ module.exports.__defineSetter__("parseInt8", function(val) {
   //0x42 = 'B'
   this._send(0x42, more);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  //then emit them as they come in
+  //without setting singleRowMode to true
+  //this has almost no meaning because libpq
+  //reads all rows into memory befor returning any
+  this._emitRowEvents = false;
+  this.on('newListener', function(event) {
+    if(event === 'row') this._emitRowEvents = true;
+  }.<span class="apidocCodeKeywordSpan">bind</span>(this));
+};
+
+util.inherits(NativeQuery, EventEmitter);
+
+NativeQuery.prototype.then = function(onSuccess, onFailure) {
+  return this.promise().then(onSuccess, onFailure);
+};
+...</pre></li>
     </ul>
 
 
@@ -2602,7 +2763,23 @@ if (err) throw err;
   //0x45 = 'E'
   this._send(0x45, more);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  console.error('This can cause conflicts and silent errors executing queries');
+}
+var values = (this.values||[]).map(utils.prepareValue);
+
+//check if the client has already executed this named query
+//if so...just execute it again - skip the planning phase
+if(client.namedQueries[this.name]) {
+  return this.native.<span class="apidocCodeKeywordSpan">execute</span>(this.name, values, after);
+}
+//plan the named query the first time, then execute it
+return this.native.prepare(this.name, this.text, values.length, function(err) {
+  if(err) return after(err);
+  client.namedQueries[self.name] = true;
+  return self.native.execute(self.name, values, after);
+});
+...</pre></li>
     </ul>
 
 
@@ -3387,6 +3564,14 @@ if(err) {
   this.options.create = this.options.create || this._create.bind(this)
   this.options.destroy = this.options.destroy || this._destroy.bind(this)
   this.pool = new genericPool.Pool(this.options)
+  // Monkey patch to ensure we always finish our work
+  //  - There is a bug where callbacks go uncalled if min is not set
+  //  - We might still not want a connection to *always* exist
+  //  - but we do want to create up to max connections if we have work
+  //  - still waiting
+  // This should be safe till the version of pg-pool is upgraded
+  // SEE: https://github.com/coopernurse/node-pool/pull/186
+  this.pool._ensureMinimum = _ensureMinimum
   this.onCreate = this.options.onCreate
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -3804,7 +3989,23 @@ client.end(function (err) {
     <li>description and source-code<pre class="apidocCodePre">catch = function (callback) {
   return this.promise().catch(callback);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+util.inherits(NativeQuery, EventEmitter);
+
+NativeQuery.prototype.then = function(onSuccess, onFailure) {
+return this.promise().then(onSuccess, onFailure);
+};
+
+NativeQuery.prototype.catch = function(callback) {
+return this.promise().<span class="apidocCodeKeywordSpan">catch</span>(callback);
+};
+
+NativeQuery.prototype.promise = function() {
+if (this._promise) return this._promise;
+this._promise = new Promise(function(resolve, reject) {
+  this.once('end', resolve);
+  this.once('error', reject);
+...</pre></li>
     </ul>
 
 
@@ -3936,7 +4137,23 @@ client.end(function (err) {
   }
   this.emit('error', err);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+client.native.arrayMode = false;
+setImmediate(function() {
+  self.emit('_done');
+});
+
+//handle possible query error
+if(err) {
+  return self.<span class="apidocCodeKeywordSpan">handleError</span>(err);
+}
+
+var result = new NativeResult();
+result.addCommandComplete(self.native.pq);
+result.rows = rows;
+
+//emit row events for each row in the result
+...</pre></li>
     </ul>
 
 
@@ -4048,7 +4265,23 @@ client.end(function (err) {
 
   this._getRows(connection, this.rows);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+  //check if the client has already executed this named query
+  //if so...just execute it again - skip the planning phase
+  if(client.namedQueries[this.name]) {
+    return this.native.execute(this.name, values, after);
+  }
+  //plan the named query the first time, then execute it
+  return this.native.<span class="apidocCodeKeywordSpan">prepare</span>(this.name, this.text, values.length, function(err) {
+    if(err) return after(err);
+    client.namedQueries[self.name] = true;
+    return self.native.execute(self.name, values, after);
+  });
+}
+else if(this.values) {
+  var vals = this.values.map(utils.prepareValue);
+...</pre></li>
     </ul>
 
 
@@ -4068,7 +4301,23 @@ client.end(function (err) {
   }.bind(this));
   return this._promise;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    if(event === 'row') this._emitRowEvents = true;
+  }.bind(this));
+};
+
+util.inherits(NativeQuery, EventEmitter);
+
+NativeQuery.prototype.then = function(onSuccess, onFailure) {
+  return this.<span class="apidocCodeKeywordSpan">promise</span>().then(onSuccess, onFailure);
+};
+
+NativeQuery.prototype.catch = function(callback) {
+  return this.promise().catch(callback);
+};
+
+NativeQuery.prototype.promise = function() {
+...</pre></li>
     </ul>
 
 
@@ -4126,7 +4375,23 @@ client.end(function (err) {
     <li>description and source-code<pre class="apidocCodePre">then = function (onSuccess, onFailure) {
   return this.promise().then(onSuccess, onFailure);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    if(event === 'row') this._emitRowEvents = true;
+  }.bind(this));
+};
+
+util.inherits(NativeQuery, EventEmitter);
+
+NativeQuery.prototype.then = function(onSuccess, onFailure) {
+  return this.promise().<span class="apidocCodeKeywordSpan">then</span>(onSuccess, onFailure);
+};
+
+NativeQuery.prototype.catch = function(callback) {
+  return this.promise().catch(callback);
+};
+
+NativeQuery.prototype.promise = function() {
+...</pre></li>
     </ul>
 
 
@@ -4209,6 +4474,302 @@ client.end(function (err) {
   });
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.pg.query" id="apidoc.module.pg.query">module pg.query</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.pg.query.query" id="apidoc.element.pg.query.query">
+        function <span class="apidocSignatureSpan">pg.</span>query
+        <span class="apidocSignatureSpan">(native)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">query = function (native) {
+  EventEmitter.call(this);
+  this.native = native;
+  this.text = null;
+  this.values = null;
+  this.name = null;
+  this.callback = null;
+  this.state = 'new';
+  this._arrayMode = false;
+
+  //if the 'row' event is listened for
+  //then emit them as they come in
+  //without setting singleRowMode to true
+  //this has almost no meaning because libpq
+  //reads all rows into memory befor returning any
+  this._emitRowEvents = false;
+  this.on('newListener', function(event) {
+    if(event === 'row') this._emitRowEvents = true;
+  }.bind(this));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var client = new pg.Client();
+
+// connect to our database
+client.connect(function (err) {
+  if (err) throw err;
+
+  // execute a query on our database
+  client.<span class="apidocCodeKeywordSpan">query</span>('SELECT $1::text as name', ['brianc'], function (err
+, result) {
+if (err) throw err;
+
+// just print the result to the console
+console.log(result.rows[0]); // outputs: { name: 'brianc' }
+
+// disconnect the client
+client.end(function (err) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.pg.query.super_" id="apidoc.element.pg.query.super_">
+        function <span class="apidocSignatureSpan">pg.query.</span>super_
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function EventEmitter() {
+  EventEmitter.init.call(this);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.pg.query.prototype" id="apidoc.module.pg.query.prototype">module pg.query.prototype</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.pg.query.prototype.catch" id="apidoc.element.pg.query.prototype.catch">
+        function <span class="apidocSignatureSpan">pg.query.prototype.</span>catch
+        <span class="apidocSignatureSpan">(callback)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">catch = function (callback) {
+  return this.promise().catch(callback);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+util.inherits(NativeQuery, EventEmitter);
+
+NativeQuery.prototype.then = function(onSuccess, onFailure) {
+return this.promise().then(onSuccess, onFailure);
+};
+
+NativeQuery.prototype.catch = function(callback) {
+return this.promise().<span class="apidocCodeKeywordSpan">catch</span>(callback);
+};
+
+NativeQuery.prototype.promise = function() {
+if (this._promise) return this._promise;
+this._promise = new Promise(function(resolve, reject) {
+  this.once('end', resolve);
+  this.once('error', reject);
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.pg.query.prototype.handleError" id="apidoc.element.pg.query.prototype.handleError">
+        function <span class="apidocSignatureSpan">pg.query.prototype.</span>handleError
+        <span class="apidocSignatureSpan">(err)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">handleError = function (err) {
+  var self = this;
+  //copy pq error fields into the error object
+  var fields = self.native.pq.resultErrorFields();
+  if(fields) {
+    for(var key in fields) {
+      err[key] = fields[key];
+    }
+  }
+  if(self.callback) {
+    self.callback(err);
+  } else {
+    self.emit('error', err);
+  }
+  self.state = 'error';
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+client.native.arrayMode = false;
+setImmediate(function() {
+  self.emit('_done');
+});
+
+//handle possible query error
+if(err) {
+  return self.<span class="apidocCodeKeywordSpan">handleError</span>(err);
+}
+
+var result = new NativeResult();
+result.addCommandComplete(self.native.pq);
+result.rows = rows;
+
+//emit row events for each row in the result
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.pg.query.prototype.promise" id="apidoc.element.pg.query.prototype.promise">
+        function <span class="apidocSignatureSpan">pg.query.prototype.</span>promise
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">promise = function () {
+  if (this._promise) return this._promise;
+  this._promise = new Promise(function(resolve, reject) {
+    this.once('end', resolve);
+    this.once('error', reject);
+  }.bind(this));
+  return this._promise;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    if(event === 'row') this._emitRowEvents = true;
+  }.bind(this));
+};
+
+util.inherits(NativeQuery, EventEmitter);
+
+NativeQuery.prototype.then = function(onSuccess, onFailure) {
+  return this.<span class="apidocCodeKeywordSpan">promise</span>().then(onSuccess, onFailure);
+};
+
+NativeQuery.prototype.catch = function(callback) {
+  return this.promise().catch(callback);
+};
+
+NativeQuery.prototype.promise = function() {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.pg.query.prototype.submit" id="apidoc.element.pg.query.prototype.submit">
+        function <span class="apidocSignatureSpan">pg.query.prototype.</span>submit
+        <span class="apidocSignatureSpan">(client)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">submit = function (client) {
+  this.state = 'running';
+  var self = this;
+  client.native.arrayMode = this._arrayMode;
+
+  var after = function(err, rows) {
+    client.native.arrayMode = false;
+    setImmediate(function() {
+      self.emit('_done');
+    });
+
+    //handle possible query error
+    if(err) {
+      return self.handleError(err);
+    }
+
+    var result = new NativeResult();
+    result.addCommandComplete(self.native.pq);
+    result.rows = rows;
+
+    //emit row events for each row in the result
+    if(self._emitRowEvents) {
+      rows.forEach(function(row) {
+        self.emit('row', row, result);
+      });
+    }
+
+
+    //handle successful result
+    self.state = 'end';
+    self.emit('end', result);
+    if(self.callback) {
+      self.callback(null, result);
+    }
+  };
+
+  if(process.domain) {
+    after = process.domain.bind(after);
+  }
+
+  //named query
+  if(this.name) {
+    if (this.name.length &gt; 63) {
+      console.error('Warning! Postgres only supports 63 characters for query names.');
+      console.error('You supplied', this.name, '(', this.name.length, ')');
+      console.error('This can cause conflicts and silent errors executing queries');
+    }
+    var values = (this.values||[]).map(utils.prepareValue);
+
+    //check if the client has already executed this named query
+    //if so...just execute it again - skip the planning phase
+    if(client.namedQueries[this.name]) {
+      return this.native.execute(this.name, values, after);
+    }
+    //plan the named query the first time, then execute it
+    return this.native.prepare(this.name, this.text, values.length, function(err) {
+      if(err) return after(err);
+      client.namedQueries[self.name] = true;
+      return self.native.execute(self.name, values, after);
+    });
+  }
+  else if(this.values) {
+    var vals = this.values.map(utils.prepareValue);
+    this.native.query(this.text, vals, after);
+  } else {
+    this.native.query(this.text, after);
+  }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.pg.query.prototype.then" id="apidoc.element.pg.query.prototype.then">
+        function <span class="apidocSignatureSpan">pg.query.prototype.</span>then
+        <span class="apidocSignatureSpan">(onSuccess, onFailure)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">then = function (onSuccess, onFailure) {
+  return this.promise().then(onSuccess, onFailure);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    if(event === 'row') this._emitRowEvents = true;
+  }.bind(this));
+};
+
+util.inherits(NativeQuery, EventEmitter);
+
+NativeQuery.prototype.then = function(onSuccess, onFailure) {
+  return this.promise().<span class="apidocCodeKeywordSpan">then</span>(onSuccess, onFailure);
+};
+
+NativeQuery.prototype.catch = function(callback) {
+  return this.promise().catch(callback);
+};
+
+NativeQuery.prototype.promise = function() {
+...</pre></li>
     </ul>
 
 
@@ -4335,7 +4896,23 @@ if(!this.rowAsArray) {
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+//handle possible query error
+if(err) {
+  return self.handleError(err);
+}
+
+var result = new NativeResult();
+result.<span class="apidocCodeKeywordSpan">addCommandComplete</span>(self.native.pq);
+result.rows = rows;
+
+//emit row events for each row in the result
+if(self._emitRowEvents) {
+  rows.forEach(function(row) {
+    self.emit('row', row, result);
+  });
+...</pre></li>
     </ul>
 
 
