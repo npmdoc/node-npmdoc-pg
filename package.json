@@ -1,1 +1,39 @@
-{     "devDependencies": {         "pg": "*",         "electron-lite": "kaizhu256/node-electron-lite#alpha",         "utility2": "kaizhu256/node-utility2#alpha"     },     "name":"npmdoc-pg",     "homepage": "https://github.com/npmdoc/node-npmdoc-pg",     "repository": {         "type": "git",         "url": "https://github.com/npmdoc/node-npmdoc-pg.git"     },     "scripts": {         "build-ci": "utility2 shReadmeTest build_ci.sh"     },     "version": "0.0.1" }
+{
+    "author": "kai zhu <kaizhu256@gmail.com>",
+    "description": "#### api documentation for  [pg (v6.1.5)](http://github.com/brianc/node-postgres)  [![npm package](https://img.shields.io/npm/v/npmdoc-pg.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-pg) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-pg.svg)](https://travis-ci.org/npmdoc/node-npmdoc-pg)",
+    "devDependencies": {
+        "electron-lite": "kaizhu256/node-electron-lite#alpha",
+        "pg": "*",
+        "utility2": "kaizhu256/node-utility2#alpha"
+    },
+    "engines": {
+        "node": ">=4.0"
+    },
+    "homepage": "https://github.com/npmdoc/node-npmdoc-pg",
+    "keywords": [
+        "documentation",
+        "pg"
+    ],
+    "license": "MIT",
+    "main": "lib.npmdoc_pg.js",
+    "name": "npmdoc-pg",
+    "nameAlias": "npmdoc_pg",
+    "nameOriginal": "npmdoc-pg",
+    "os": [
+        "darwin",
+        "linux"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/npmdoc/node-npmdoc-pg.git"
+    },
+    "scripts": {
+        "build-ci": "utility2 shReadmeTest build_ci.sh",
+        "env": "env",
+        "heroku-postbuild": "npm install \"kaizhu256/node-utility2#alpha\" && utility2 shDeployHeroku",
+        "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh postinstall",
+        "start": "PORT=${PORT:-8080} utility2 start test.js",
+        "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
+    },
+    "version": "0.0.4"
+}
